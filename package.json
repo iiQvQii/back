@@ -28,7 +28,6 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "nodemon": "^2.0.19",
-    "twzipcode-data": "^2.0.0"
+    "nodemon": "^2.0.19"
   }
 }

@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-
-import admins from '../models/admins.js'
+import hosts from '../models/hosts.js'
 
 // 管理員註冊+密碼加密
 export const register = async (req, res) => {
@@ -20,7 +18,7 @@ export const register = async (req, res) => {
   }
   req.body.password = bcrypt.hashSync(password, 10)
   try {
-    await admins.create(req.body)
+    await hosts.create(req.body)
     res.status(200).send({ success: true, message: '' })
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -28,31 +26,9 @@ export const register = async (req, res) => {
       const message = error.errors[key].message
       return res.status(400).send({ success: false, message })
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
-      res.status(400).send({ success: false, message: '管理員帳號已存在' })
+      res.status(400).send({ success: false, message: '此業主帳號已存在' })
     } else {
       res.status(500).send({ success: false, message: '伺服器錯誤' })
     }
-  }
-}
-
-// 登入
-// jwt簽發
-export const login = async (req, res) => {
-  try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
-    req.user.tokens.push(token)
-    await req.user.save()
-    res.status(200).send({
-      success: true,
-      message: '',
-      result: {
-        token,
-        account: req.user.account,
-        email: req.user.email,
-        role: req.user.role
-      }
-    })
-  } catch (error) {
-    res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }

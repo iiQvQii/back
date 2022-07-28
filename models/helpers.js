@@ -1,10 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
-import twzipcode from 'twzipcode-data'
-const data = twzipcode()
-console.log(data)
 
-const hostSchema = new mongoose.Schema({
+const helperSchema = new mongoose.Schema({
   account: {
     type: String,
     required: [true, '缺少帳號欄位'],
@@ -72,4 +69,4 @@ const hostSchema = new mongoose.Schema({
     type: [String]
   }
 }, { versionKey: false })
-export default mongoose.model('hosts', hostSchema)
+export default mongoose.model('heplers', helperSchema)

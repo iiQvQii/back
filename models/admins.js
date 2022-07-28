@@ -13,6 +13,9 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String
+  },
   avatar: {
     type: String
   },
