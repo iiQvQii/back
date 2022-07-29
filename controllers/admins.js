@@ -20,6 +20,7 @@ export const register = async (req, res) => {
   }
   req.body.password = bcrypt.hashSync(password, 10)
   try {
+    // **用什麼去判別要create在哪個models?
     await admins.create(req.body)
     res.status(200).send({ success: true, message: '' })
   } catch (error) {
@@ -48,10 +49,19 @@ export const login = async (req, res) => {
       result: {
         token,
         account: req.user.account,
-        email: req.user.email,
-        role: req.user.role
+        email: req.user.email
       }
     })
+  } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+
+export const logout = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => token !== req.token)
+    await req.user.save()
+    res.status(200).send({ success: true, message: '' })
   } catch (error) {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
