@@ -19,10 +19,14 @@ const helperSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    maxlength: [15, '帳號必須 15 個字以下']
+    maxlength: [15, '姓名必須 15 個字以下']
   },
   gender: {
-    type: String
+    type: String,
+    enum: {
+      values: ['male', 'female', 'rather not say'],
+      message: '性別錯誤'
+    }
   },
   birth: {
     type: Date
@@ -64,6 +68,10 @@ const helperSchema = new mongoose.Schema({
   },
   photos: {
     type: String
+  },
+  role: {
+    type: Number,
+    default: 2
   },
   tokens: {
     type: [String]

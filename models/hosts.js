@@ -65,6 +65,10 @@ const hostSchema = new mongoose.Schema({
   photos: {
     type: String
   },
+  role: {
+    type: Number,
+    default: 1
+  },
   tokens: {
     type: [String]
   }

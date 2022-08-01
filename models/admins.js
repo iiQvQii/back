@@ -19,6 +19,9 @@ const adminSchema = new mongoose.Schema({
   avatar: {
     type: String
   },
+  role: {
+    type: Number
+  },
   tokens: {
     type: [String]
   }
