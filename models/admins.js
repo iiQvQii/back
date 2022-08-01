@@ -20,7 +20,8 @@ const adminSchema = new mongoose.Schema({
     type: String
   },
   role: {
-    type: Number
+    type: Number,
+    required: true
   },
   tokens: {
     type: [String]
