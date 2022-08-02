@@ -20,16 +20,22 @@ const hostSchema = new mongoose.Schema({
   name: {
     type: String,
     minlength: [2, '帳號必須 2 個字以上'],
-    maxlength: [15, '旅舍必須 15 個字以下'],
+    maxlength: [15, '民宿名稱必須 15 個字以下'],
     required: true
   },
   tel: {
     type: String,
-    required: true
+    maxlength: [10, '連絡電話必須 10 個字以下']
+  },
+  mobile: {
+    type: String,
+    required: [true, '缺少手機欄位'],
+    minlength: [10, '手機10碼'],
+    maxlength: [10, '手機10碼']
   },
   email: {
     type: String,
-    required: [true, '缺少欄位'],
+    required: [true, '缺少email欄位'],
     validate: {
       validator(email) {
         return validator.isEmail(email)
