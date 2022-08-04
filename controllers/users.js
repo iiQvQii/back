@@ -47,7 +47,7 @@ export const register = async (req, res) => {
 // jwt簽發
 export const login = async (req, res) => {
   try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    const token = jwt.sign({ _id: req.user._id, role: req.user.role }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
     res.status(200).send({
@@ -69,6 +69,21 @@ export const logout = async (req, res) => {
     req.user.tokens = req.user.tokens.filter(token => token !== req.token)
     await req.user.save()
     res.status(200).send({ success: true, message: '' })
+  } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+export const getUser = (req, res) => {
+  try {
+    res.status(200).send({
+      success: true,
+      message: '',
+      result: {
+        account: req.user.account,
+        email: req.user.email,
+        role: req.user.role
+      }
+    })
   } catch (error) {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }

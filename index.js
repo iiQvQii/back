@@ -3,9 +3,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 
-import adminRouter from './routes/admins.js'
-import hostRouter from './routes/hosts.js'
-import helperRouter from './routes/helpers.js'
+import './passport/passport.js'
+import usersRouter from './routes/users.js'
 
 mongoose.connect(process.env.DB_URL)
 
@@ -24,15 +23,12 @@ app.use((_, req, res, next) => {
   res.status(400).send({ success: false, message: '請求被拒' })
 })
 
-
 app.use(express.json())
 app.use((_, req, res, next) => {
   res.status(400).send({ success: false, message: '請求格式錯誤' })
 })
 
-app.use('/admins', adminRouter)
-app.use('/hosts', hostRouter)
-app.use('/helpers', helperRouter)
+app.use('/users', usersRouter)
 
 app.all('*', (req, res) => {
   res.status(404).send({ success: false, message: '找不到??' })

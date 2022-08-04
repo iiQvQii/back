@@ -3,21 +3,31 @@ import passportLocal from 'passport-local'
 import passportJWT from 'passport-jwt'
 import bcrypt from 'bcrypt'
 import admins from '../models/admins.js'
+import hosts from '../models/hosts.js'
+import helpers from '../models/helpers.js'
 
 const LocalStrategy = passportLocal.Strategy
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 
-// 管理員登入驗證
-passport.use('adminLogin', new LocalStrategy({
+// 定義驗證方式
+// done(錯誤, req.user內容, info內容)
+passport.use('login', new LocalStrategy({
   usernameField: 'account',
-  passwordField: 'password'
-}, async (account, password, done) => {
+  passwordField: 'password',
+  passReqToCallback: true
+}, async (req, account, password, done) => {
   try {
-    // **要用什麼判斷要去哪裡找這個account?
-    const user = await admins.findOne({ account })
+    let user
+    if (req.body.role === 0) {
+      user = await admins.findOne({ account })
+    } else if (req.body.role === 1) {
+      user = await hosts.findOne({ account })
+    } else {
+      user = await helpers.findOne({ account })
+    }
     if (!user) {
-      return done(null, false, { message: '管理員帳號不存在' })
+      return done(null, false, { message: '帳號不存在' })
     }
     if (!bcrypt.compareSync(password, user.password)) {
       return done(null, false, { message: '密碼錯誤' })
@@ -28,7 +38,7 @@ passport.use('adminLogin', new LocalStrategy({
   }
 }))
 
-// jwt簽發時帶id，驗證時解譯id
+// // jwt簽發時帶id，驗證時解譯id
 passport.use('jwt', new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
@@ -41,10 +51,9 @@ passport.use('jwt', new JWTStrategy({
   }
   const token = req.headers.authorization.split(' ')[1]
   try {
-    // **要用什麼判斷要去哪裡找這個account?
     const user = await admins.findById(payload._id)
     if (!user) {
-      return done(null, false, { message: '管理員帳號不存在' })
+      return done(null, false, { message: '管理員不存在' })
     }
     if (user.tokens.indexOf(token) === -1) {
       return done(null, false, { message: '驗證錯誤' })

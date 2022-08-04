@@ -21,7 +21,8 @@ const adminSchema = new mongoose.Schema({
   },
   role: {
     type: Number,
-    required: true
+    required: true,
+    defalut: 0
   },
   tokens: {
     type: [String]

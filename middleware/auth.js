@@ -1,9 +1,9 @@
 import passport from 'passport'
 import jsonwebtoken from 'jsonwebtoken'
 
-// 管理員登入驗證
+// 登入驗證
 export const login = (req, res, next) => {
-  passport.authenticate('adminLogin', { session: false }, (err, user, info) => {
+  passport.authenticate('login', { session: false }, (err, user, info) => {
     if (err || !user) {
       if (info.message === 'Missing credentials') info.message = '驗證錯誤'
       return res.status(401).send({ success: false, message: info.message })
