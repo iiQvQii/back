@@ -39,21 +39,29 @@ passport.use('login', new LocalStrategy({
 }))
 
 // // jwt簽發時帶id，驗證時解譯id
+// done(錯誤, req.user內容, info內容)
 passport.use('jwt', new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
   passReqToCallback: true,
   ignoreExpiration: true
 }, async (req, payload, done) => {
-  const expired = payload.exp * 1000 < Date.now()
-  if (expired && req.originalUrl !== '/users/extend' && req.originalUrl !== '/users/logout') {
-    return done(null, false, { message: '登入逾期' })
-  }
+  // const expired = payload.exp * 1000 < Date.now()
+  // if (expired && req.originalUrl !== '/users/extend' && req.originalUrl !== '/users/logout') {
+  //   return done(null, false, { message: '登入逾期' })
+  // }
   const token = req.headers.authorization.split(' ')[1]
   try {
-    const user = await admins.findById(payload._id)
+    let user
+    if (payload.role === 0) {
+      user = await admins.findById(payload._id)
+    } else if (payload.role === 1) {
+      user = await hosts.findById(payload._id)
+    } else {
+      user = await helpers.findById(payload._id)
+    }
     if (!user) {
-      return done(null, false, { message: '管理員不存在' })
+      return done(null, false, { message: '此帳號不存在' })
     }
     if (user.tokens.indexOf(token) === -1) {
       return done(null, false, { message: '驗證錯誤' })
