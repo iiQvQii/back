@@ -16,7 +16,6 @@ export const login = (req, res, next) => {
 export const jwt = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, data, info) => {
     if (err || !data) {
-      console.log(data)
       if (info instanceof jsonwebtoken.JsonWebTokenError) {
         return res.status(401).send({ success: false, message: '驗證錯誤' })
       } else {
