@@ -56,8 +56,20 @@ export const login = async (req, res) => {
       result: {
         token,
         account: req.user.account,
-        role: req.user.role,
-        email: req.user.email
+        name: req.user.name,
+        avatar: req.user.avatar,
+        tel: req.user.tel,
+        mobile: req.user.mobile,
+        email: req.user.email,
+        city: req.user.city,
+        district: req.user.district,
+        address: req.user.address,
+        zipcode: req.user.zipcode,
+        description: req.user.description,
+        photos: req.user.photos,
+        gender: req.user.gender,
+        birth: req.user.birth,
+        role: req.user.role
       }
     })
   } catch (error) {
@@ -93,7 +105,19 @@ export const getUser = (req, res) => {
       message: '',
       result: {
         account: req.user.account,
+        name: req.user.name,
+        avatar: req.user.avatar,
+        tel: req.user.tel,
+        mobile: req.user.mobile,
         email: req.user.email,
+        city: req.user.city,
+        district: req.user.district,
+        address: req.user.address,
+        zipcode: req.user.zipcode,
+        description: req.user.description,
+        photos: req.user.photos,
+        gender: req.user.gender,
+        birth: req.user.birth,
         role: req.user.role
       }
     })
@@ -102,18 +126,29 @@ export const getUser = (req, res) => {
   }
 }
 
-export const editUser = (req, res) => {
+export const editUserInfo = async (req, res) => {
   try {
-    res.status(200).send({
-      success: true,
-      message: '',
-      result: {
-        account: req.user.account,
-        email: req.user.email,
-        role: req.user.role
-      }
-    })
+    const data = {
+      name: req.body.name,
+      gender: req.body.gender,
+      birth: req.body.birth,
+      tel: req.body.tel,
+      mobile: req.body.mobile,
+      email: req.body.email,
+      city: req.body.city,
+      district: req.body.district,
+      address: req.body.address,
+      zipcode: req.body.zipcode
+    }
+    const result = await hosts.findByIdAndUpdate(req.params.id, data, { new: true })
+    res.status(200).send({ success: true, message: '', result })
   } catch (error) {
-    res.status(500).send({ success: false, message: '伺服器錯誤' })
+    if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      return res.status(400).send({ success: false, message })
+    } else {
+      res.status(500).send({ success: false, message: '伺服器錯誤' })
+    }
   }
 }
