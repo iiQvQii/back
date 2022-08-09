@@ -7,7 +7,7 @@ import {
   logout,
   getUser,
   extend,
-  editUser
+  editUserInfo
 } from '../controllers/users.js'
 
 const router = express.Router()
@@ -19,7 +19,7 @@ router.post('/login', content('application/json'), auth.login, login)
 router.delete('/logout', auth.jwt, logout)
 router.post('/extend', auth.jwt, extend) // 換發token
 router.get('/', auth.jwt, getUser)
-router.patch('/edit', auth.jwt, editUser)
+router.patch('/edit_info', auth.jwt, editUserInfo)
 
 // (查/刪)業主
 // (查/刪)小幫手
