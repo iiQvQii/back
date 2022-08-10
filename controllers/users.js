@@ -145,10 +145,18 @@ export const editUserInfo = async (req, res) => {
       photos: req.body.photos
     }
     if (req.body.role === '1') {
+      // if (req.file) data.photos = req.file.path
+      if (req.files) {
+        data.photos = []
+        for (let i = 0; i < req.files.length; i++) {
+          data.photos.push(req.files[i].path)
+        }
+      }
       const result = await hosts.findByIdAndUpdate(req.user._id, data, { new: true })
       res.status(200).send({ success: true, message: '', result })
     }
   } catch (error) {
+    console.log(error)
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
