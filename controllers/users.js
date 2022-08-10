@@ -129,6 +129,7 @@ export const getUser = (req, res) => {
 
 export const editUserInfo = async (req, res) => {
   try {
+    console.log('editUserInfo123')
     const data = {
       name: req.body.name,
       gender: req.body.gender,
@@ -139,10 +140,14 @@ export const editUserInfo = async (req, res) => {
       city: req.body.city,
       district: req.body.district,
       address: req.body.address,
-      zipcode: req.body.zipcode
+      zipcode: req.body.zipcode,
+      description: req.body.description,
+      photos: req.body.photos
     }
-    const result = await hosts.findByIdAndUpdate(req.params.id, data, { new: true })
-    res.status(200).send({ success: true, message: '', result })
+    if (req.body.role === '1') {
+      const result = await hosts.findByIdAndUpdate(req.user._id, data, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+    }
   } catch (error) {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const jobSchema = new mongoose.Schema({
   publisher: {
     type: mongoose.ObjectId,
-    ref: 'users'
+    ref: 'hosts'
   },
   title: {
     type: String,
@@ -43,7 +43,7 @@ const jobSchema = new mongoose.Schema({
   question: {
     type: String
   },
-  isShow: {
+  isShown: {
     type: Boolean
   }
 
