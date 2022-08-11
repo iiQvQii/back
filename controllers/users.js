@@ -129,7 +129,6 @@ export const getUser = (req, res) => {
 
 export const editUserInfo = async (req, res) => {
   try {
-    console.log('editUserInfo123')
     const data = {
       name: req.body.name,
       gender: req.body.gender,
@@ -144,9 +143,10 @@ export const editUserInfo = async (req, res) => {
       description: req.body.description,
       photos: req.body.photos
     }
+    // 業主
     if (req.body.role === '1') {
       // if (req.file) data.photos = req.file.path
-      if (req.files) {
+      if (req.files.length !== 0) {
         data.photos = []
         for (let i = 0; i < req.files.length; i++) {
           data.photos.push(req.files[i].path)
