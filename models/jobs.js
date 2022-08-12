@@ -52,6 +52,9 @@ const jobSchema = new mongoose.Schema({
       message: '福利分類錯誤'
     }
   },
+  week_hours: {
+    type: Number
+  },
   published_time: {
     type: Date
   },
