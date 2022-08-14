@@ -1,6 +1,6 @@
 import express from 'express'
 import content from '../middleware/content.js'
-// import upload from '../middleware/upload.js'
+import upload from '../middleware/upload.js'
 import * as auth from '../middleware/auth.js'
 import {
   register,
@@ -10,7 +10,6 @@ import {
   extend,
   editUserInfo
 } from '../controllers/users.js'
-import upload from '../middleware/upload.js'
 
 const router = express.Router()
 
