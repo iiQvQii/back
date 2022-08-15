@@ -3,7 +3,7 @@ import hosts from '../models/hosts.js'
 
 export const createJob = async (req, res) => {
   try {
-    const result = await jobs.create({
+    const data = {
       host: req.user._id,
       title: req.body.title,
       city: req.body.city,
@@ -13,11 +13,19 @@ export const createJob = async (req, res) => {
       date_from: req.body.date_from,
       date_to: req.body.date_to,
       description: req.body.description,
-      photos: req.file?.path || '',
+      photos: [],
       welfare: req.body.welfare,
       week_hours: req.body.week_hours,
       is_shown: req.body.is_shown
-    })
+    }
+    if (req.files.length !== 0) {
+      // result.photos = []
+      for (let i = 0; i < req.files.length; i++) {
+        data.photos.push(req.files[i].path)
+        console.log(data.photos)
+      }
+    }
+    const result = await jobs.create(data)
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
