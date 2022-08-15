@@ -1,6 +1,6 @@
 import express from 'express'
 import content from '../middleware/content.js'
-import upload from '../middleware/upload.js'
+import * as upload from '../middleware/upload.js'
 import * as auth from '../middleware/auth.js'
 import {
   register,
@@ -20,7 +20,7 @@ router.post('/login', content('application/json'), auth.login, login)
 router.delete('/logout', auth.jwt, logout)
 router.post('/extend', auth.jwt, extend) // 換發token
 router.get('/', auth.jwt, getUser)
-router.patch('/edit_info', content('multipart/form-data'), auth.jwt, upload, editUserInfo)
+router.patch('/edit_info', content('multipart/form-data'), auth.jwt, upload.array, editUserInfo)
 
 // (查/刪)業主
 // (查/刪)小幫手

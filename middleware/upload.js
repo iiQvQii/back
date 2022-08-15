@@ -26,7 +26,9 @@ const upload = multer({
   }
 })
 
-export default async (req, res, next) => {
+// const delete =
+
+export const array = async (req, res, next) => {
   // upload.single('photos')(req, res, async error => {
   upload.array('photos', 5)(req, res, async error => {
     console.log(req.files, 123)

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const jobSchema = new mongoose.Schema({
-  publisher: {
+  host: {
     type: mongoose.ObjectId,
     ref: 'hosts'
   },
@@ -36,27 +36,33 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  start_time: {
-    type: Date
+  date_from: {
+    type: Date,
+    required: true
+
   },
-  end_time: {
-    type: Date
+  date_to: {
+    type: Date,
+    required: true
+
   },
   description: {
-    type: String
+    type: String,
+    required: true
+  },
+  photos: {
+    type: [String]
   },
   welfare: {
-    type: String,
-    enum: {
-      values: ['住宿床位', '交通工具', '零用金', '投保保險', '免費課程', '供餐'],
-      message: '福利分類錯誤'
-    }
+    type: [String]
   },
   week_hours: {
-    type: Number
+    type: Number,
+    required: true
   },
   published_time: {
-    type: Date
+    type: Date,
+    default: Date.now()
   },
   question: {
     type: String

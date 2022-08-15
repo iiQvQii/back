@@ -3,17 +3,24 @@ import hosts from '../models/hosts.js'
 
 export const createJob = async (req, res) => {
   try {
-    let result = await hosts.findById(req.user._id, 'cart').populate('cart.product')
-    result = await jobs.create({
-      name: req.body.name,
-      price: req.body.price,
+    const result = await jobs.create({
+      host: req.user._id,
+      title: req.body.title,
+      city: req.body.city,
+      district: req.body.district,
+      address: req.body.address,
+      zipcode: req.body.zipcode,
+      date_from: req.body.date_from,
+      date_to: req.body.date_to,
       description: req.body.description,
-      image: req.file?.path || '',
-      sell: req.body.sell,
-      category: req.body.category
+      photos: req.file?.path || '',
+      welfare: req.body.welfare,
+      week_hours: req.body.week_hours,
+      is_shown: req.body.is_shown
     })
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
+    console.log(error)
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
