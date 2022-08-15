@@ -3,7 +3,8 @@ import hosts from '../models/hosts.js'
 
 export const createJob = async (req, res) => {
   try {
-    const result = await jobs.create({
+    let result = await hosts.findById(req.user._id, 'cart').populate('cart.product')
+    result = await jobs.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
