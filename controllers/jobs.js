@@ -1,5 +1,5 @@
 import jobs from '../models/jobs.js'
-import hosts from '../models/hosts.js'
+// import hosts from '../models/hosts.js'
 
 export const createJob = async (req, res) => {
   try {
@@ -52,6 +52,15 @@ export const getShownJobs = async (req, res) => {
 // 所有工作
 
 // 某一工作
+export const getJob = async (req, res) => {
+  try {
+    const result = await jobs.findById(req.params.id)
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
 
 // 某host刊登的工作
 export const getMyJobs = async (req, res) => {
