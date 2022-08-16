@@ -19,7 +19,6 @@ export const createJob = async (req, res) => {
       is_shown: req.body.is_shown
     }
     if (req.files.length !== 0) {
-      // result.photos = []
       for (let i = 0; i < req.files.length; i++) {
         data.photos.push(req.files[i].path)
         console.log(data.photos)
@@ -36,5 +35,31 @@ export const createJob = async (req, res) => {
     } else {
       res.status(500).send({ success: false, message: '伺服器錯誤' })
     }
+  }
+}
+
+// 已顯示的工作
+export const getShownJobs = async (req, res) => {
+  try {
+    const result = await jobs.find({ is_shown: true })
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+
+// 所有工作
+
+// 某一工作
+
+// 某host刊登的工作
+export const getMyJobs = async (req, res) => {
+  try {
+    const result = await jobs.find({ host: req.user._id })
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }

@@ -28,6 +28,25 @@ const upload = multer({
 
 // const delete =
 
+export const single = async (req, res, next) => {
+  upload.single('photos')(req, res, async error => {
+    console.log(req.files, 123)
+    if (error instanceof multer.MulterError) {
+      let message = '上傳失敗'
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        message = '檔案太大'
+      } else if (error.code === 'LIMIT_FORMAT') {
+        message = '檔案格式錯誤'
+      }
+      res.status(400).send({ success: false, message })
+    } else if (error) {
+      res.status(500).send({ success: false, message: '伺服器錯誤' })
+    } else {
+      next()
+    }
+  })
+}
+
 export const array = async (req, res, next) => {
   // upload.single('photos')(req, res, async error => {
   upload.array('photos', 5)(req, res, async error => {
