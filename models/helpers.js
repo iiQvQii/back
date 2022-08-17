@@ -67,4 +67,4 @@ const helperSchema = new mongoose.Schema({
     type: [String]
   }
 }, { versionKey: false })
-export default mongoose.model('heplers', helperSchema)
+export default mongoose.model('helpers', helperSchema)

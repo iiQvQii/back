@@ -20,8 +20,8 @@ const ordersSchema = new mongoose.Schema({
     // 1審核中/2通過/3未通過/4取消報名
   },
   answer: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   applied_time: {
     type: Date,
