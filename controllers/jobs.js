@@ -39,6 +39,7 @@ export const createJob = async (req, res) => {
   }
 }
 
+// 這裡還沒好
 export const editJob = async (req, res) => {
   try {
     const data = {

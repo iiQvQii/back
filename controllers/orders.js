@@ -10,12 +10,14 @@ export const createOrder = async (req, res) => {
       job: req.body._id,
       answer: req.body.answer
     }
-    const isShown = await jobs.findById(req.body._id)
-    if (!isShown.is_shown) {
+    const thisJob = await jobs.findById(req.body._id)
+    if (!thisJob.is_shown) {
       return res.status(400).send({ success: false, message: '此職缺已關閉' })
     }
+    // findbyidandupdate
+    // thisJob.applied_num++
     const result = await orders.create(data)
-    res.status(200).send({ success: true, message: '', result: result._id })
+    res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
   }
