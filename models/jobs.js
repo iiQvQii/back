@@ -8,7 +8,7 @@ const jobSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, '缺少職缺名稱'],
-    maxlength: [20, '職缺名稱不得超過20字']
+    maxlength: [30, '職缺名稱不得超過30字']
   },
   city: {
     type: String,
@@ -65,10 +65,15 @@ const jobSchema = new mongoose.Schema({
     default: Date.now()
   },
   question: {
-    type: String
+    type: String,
+    maxlength: [100, '提問不得超過100字']
   },
   is_shown: {
     type: Boolean
+  },
+  applied_num: {
+    type: Number,
+    default: 0
   }
 
 }, { versionKey: false })

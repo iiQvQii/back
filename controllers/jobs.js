@@ -16,6 +16,7 @@ export const createJob = async (req, res) => {
       photos: [],
       welfare: req.body.welfare,
       week_hours: req.body.week_hours,
+      question: req.body.question,
       is_shown: req.body.is_shown
     }
     if (req.files.length !== 0) {
