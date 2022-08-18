@@ -113,10 +113,12 @@ export const getMyJobs = async (req, res) => {
   }
 }
 
-// 找包含[關鍵字]的title工作 (前台搜尋)
+// 找包含[關鍵字]的title工作 (前台搜尋) (前端還沒好)
 export const getSearchJobs = async (req, res) => {
   try {
-    const result = await jobs.find({ title: { $regex: req.params.id, $options: 'i' } })
+    // const result = await jobs.find({ title: { $regex: req.params.keyword, $options: 'i' } })
+    const keyword = new RegExp(`.*${req.params.keyword}.*`, 'gi')
+    const result = await jobs.find({ title: keyword })
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
@@ -124,10 +126,18 @@ export const getSearchJobs = async (req, res) => {
   }
 }
 
-// 找特定期間的工作 (前台搜尋)
+// 找特定期間的工作 (前台搜尋) (還沒寫完)
 // User.find({age: {$gte: 21, $lte: 65}})
 // User.where('age').gte(21).lte(65);
-
+export const getDateJob = async (req, res) => {
+  try {
+    const result = await jobs.find().where('age').gte(req.params.from).lte(65)
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
 // 找某縣市的工作 (前台搜尋)
 
 // 找某地區的工作 (前台搜尋)

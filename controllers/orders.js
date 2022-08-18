@@ -5,17 +5,18 @@ import orders from '../models/orders.js'
 export const createOrder = async (req, res) => {
   try {
     const data = {
-      host: req.body.host,
+      host: '',
       helper: req.user._id,
-      job: req.body._id,
+      job: req.body.job,
       answer: req.body.answer
     }
-    const thisJob = await jobs.findById(req.body._id)
+    const thisJob = await jobs.findById(req.body.job)
     if (!thisJob.is_shown) {
       return res.status(400).send({ success: false, message: '此職缺已關閉' })
     }
-    // findbyidandupdate
-    // thisJob.applied_num++
+    data.host = thisJob.host
+    thisJob.applied_num++
+    thisJob.save()
     const result = await orders.create(data)
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
