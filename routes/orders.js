@@ -5,7 +5,8 @@ import helpers from '../middleware/helpers.js'
 import {
   createOrder,
   getAllOrders,
-  getMyOrders
+  getMyOrders,
+  cancelOrder
 } from '../controllers/orders.js'
 
 const router = express.Router()
@@ -14,6 +15,7 @@ const router = express.Router()
 router.post('/', content('application/json'), auth.jwt, helpers, createOrder)
 router.get('/', auth.jwt, getAllOrders)
 router.get('/my_orders', auth.jwt, getMyOrders)
-// router.patch('/') 改訂單狀態(通過不通過)
+// 改訂單狀態(通過不通過)
+router.patch('/', content('application/json'), auth.jwt, helpers, cancelOrder)
 
 export default router

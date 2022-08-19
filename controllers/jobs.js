@@ -1,4 +1,5 @@
 import jobs from '../models/jobs.js'
+import orders from '../models/orders.js'
 // import hosts from '../models/hosts.js'
 
 export const createJob = async (req, res) => {
@@ -64,7 +65,18 @@ export const editJob = async (req, res) => {
         console.log(data.photos)
       }
     }
-    const result = await jobs.create(data)
+    // 如果職缺is not shown ， order 的 review 狀態改為 5職缺已關閉
+    if (!data.is_shown) {
+      const theOrders = await orders.find({ job: req.params.id })
+      console.log(theOrders)
+      if (theOrders.length > 0) {
+        for (let i = 0; i < theOrders.length; i++) {
+          theOrders[i].review = 5
+        }
+      }
+      await theOrders.save()
+    }
+    const result = await jobs.findByIdAndUpdate(req.params.id, data, { new: true })
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)

@@ -17,7 +17,7 @@ const ordersSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 1
-    // 1審核中/2通過/3未通過/4取消報名
+    // 1審核中/2通過/3未通過/4取消報名/5職缺已關閉
   },
   answer: {
     type: String
