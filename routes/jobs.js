@@ -17,9 +17,9 @@ const router = express.Router()
 // app.use('/jobs', jobsRouter)
 router.post('/', content('multipart/form-data'), auth.jwt, hosts, upload.array, createJob)
 router.patch('/:id', content('multipart/form-data'), auth.jwt, hosts, upload.array, editJob)
-router.get('/', auth.jwt, getShownJobs)
+router.get('/', getShownJobs)
 router.get('/my_job', auth.jwt, getMyJobs)
-router.get('/search/:keyword', auth.jwt, getSearchJobs)
-router.get('/:id', auth.jwt, getJob)
+router.get('/search/:keyword', getSearchJobs)
+router.get('/:id', getJob)
 
 export default router

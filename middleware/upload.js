@@ -11,7 +11,6 @@ cloudinary.config({
 const upload = multer({
   storage: new CloudinaryStorage({ cloudinary }),
   fileFilter(req, file, cb) {
-    console.log('123')
     console.log(file, 'me')
     if (!file.mimetype.startsWith('image')) {
       // console.log('faild', file)
@@ -50,7 +49,7 @@ export const single = async (req, res, next) => {
 export const array = async (req, res, next) => {
   // upload.single('photos')(req, res, async error => {
   upload.array('photos', 5)(req, res, async error => {
-    console.log(req.files, 123)
+    console.log(req.files, 'req.files')
     if (error instanceof multer.MulterError) {
       let message = '上傳失敗'
       if (error.code === 'LIMIT_FILE_SIZE') {

@@ -19,7 +19,7 @@ export const jwt = (req, res, next) => {
       if (info instanceof jsonwebtoken.JsonWebTokenError) {
         return res.status(401).send({ success: false, message: '驗證錯誤' })
       } else {
-        return res.status(401).send({ success: false, message: info.message + '123' })
+        return res.status(401).send({ success: false, message: info.message })
       }
     }
     req.user = data.user

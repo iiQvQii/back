@@ -140,10 +140,9 @@ export const editUserInfo = async (req, res) => {
       district: req.body.district,
       address: req.body.address,
       zipcode: req.body.zipcode,
-      description: req.body.description,
-      photos: req.body.photos
+      description: req.body.description
     }
-    // 業主
+    // 業主--------------------------------------
     if (req.body.role === '1') {
       // if (req.file) data.photos = req.file.path
       if (req.files.length !== 0) {
@@ -153,6 +152,16 @@ export const editUserInfo = async (req, res) => {
         }
       }
       const result = await hosts.findByIdAndUpdate(req.user._id, data, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+      // 小幫手---------------------------------------
+    } else {
+      if (req.files.length !== 0) {
+        data.photos = []
+        for (let i = 0; i < req.files.length; i++) {
+          data.photos.push(req.files[i].path)
+        }
+      }
+      const result = await helpers.findByIdAndUpdate(req.user._id, data, { new: true })
       res.status(200).send({ success: true, message: '', result })
     }
   } catch (error) {

@@ -56,7 +56,7 @@ const helperSchema = new mongoose.Schema({
     type: String
   },
   photos: {
-    type: String
+    type: [String]
   },
   role: {
     type: Number,
