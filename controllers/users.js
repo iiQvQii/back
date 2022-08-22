@@ -99,6 +99,7 @@ export const extend = async (req, res) => {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }
+// 取得使用者本身
 export const getUser = (req, res) => {
   try {
     res.status(200).send({
@@ -123,6 +124,17 @@ export const getUser = (req, res) => {
       }
     })
   } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+// 取得某helper
+export const getHelper = async (req, res) => {
+  try {
+    const result = await helpers.findById(req.params.id)
+    console.log(result)
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }

@@ -7,6 +7,7 @@ import {
   login,
   logout,
   getUser,
+  getHelper,
   extend,
   editUserInfo
 } from '../controllers/users.js'
@@ -22,7 +23,8 @@ router.post('/extend', auth.jwt, extend) // 換發token
 router.get('/', auth.jwt, getUser)
 router.patch('/edit_info', content('multipart/form-data'), auth.jwt, upload.array, editUserInfo)
 
-// (查/刪)業主
+// (查)業主
+router.get('/helper/:id', auth.jwt, getHelper)
 // (查/刪)小幫手
 // (查/刪)工作
 

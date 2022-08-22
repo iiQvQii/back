@@ -47,7 +47,7 @@ export const getMyOrders = async (req, res) => {
     let result
     // 業主
     if (req.user.role === 1) {
-      result = await orders.find({ host: req.user._id }).populate('host', '_id name').populate('helper', 'name avatar').populate('job')
+      result = await orders.find({ host: req.user._id }).populate('host', '_id name').populate('helper').populate('job')
       // 小幫手
     } else if (req.user.role === 2) {
       result = await orders.find({ helper: req.user._id }).populate('host', '_id name').populate('helper', 'name avatar').populate('job')
