@@ -21,10 +21,14 @@ export const createJob = async (req, res) => {
       is_shown: req.body.is_shown
     }
     if (req.files.length !== 0) {
-      for (let i = 0; i < req.files.length; i++) {
-        data.photos.push(req.files[i].path)
+      for (const i of req.files) {
+        data.photos.push(i.path)
         console.log(data.photos)
       }
+      // for (let i = 0; i < req.files.length; i++) {
+      //   data.photos.push(req.files[i].path)
+      //   console.log(data.photos)
+      // }
     }
     const result = await jobs.create(data)
     res.status(200).send({ success: true, message: '', result })
@@ -133,12 +137,29 @@ export const getMyJobs = async (req, res) => {
   }
 }
 
-// 找包含[關鍵字]的title工作 (前台搜尋) (前端還沒好)
+// 找包含[搜尋條件]的工作 (前台搜尋) (前端還沒好)
+// title/city/district/weldare
+// 包含所提供的
 export const getSearchJobs = async (req, res) => {
   try {
     // const result = await jobs.find({ title: { $regex: req.params.keyword, $options: 'i' } })
-    const keyword = new RegExp(`.*${req.params.keyword}.*`, 'gi')
-    const result = await jobs.find({ title: keyword })
+    const title = req.query.title
+    const city = req.query.city
+    const district = req.query.district
+    const welfare = req.query.welfare
+    console.log(req.query.welfare)
+    const result = await jobs.find({
+      $and: [
+        { title: RegExp(`.*${title}.*`, 'gi') },
+        { city: RegExp(`.*${city}.*`, 'gi') },
+        { district: RegExp(`.*${district}.*`, 'gi') },
+        { welfare: { $in: RegExp(`.*${welfare}.*`, 'gi') } }
+        // 大於from 小於to
+      ]
+    })
+    console.log(result)
+    // const keyword = new RegExp(`.*${req.params.keyword}.*`, 'gi')
+    // const result = await jobs.find({ $or: { title: keyword } })
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
