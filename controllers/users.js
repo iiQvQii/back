@@ -187,3 +187,17 @@ export const editUserInfo = async (req, res) => {
     }
   }
 }
+
+export const changeAvatar = async (res, req) => {
+  let avatar
+  if (req.body.role === '1') {
+    if (req.file) avatar = req.file.path
+    const result = await hosts.findByIdAndUpdate(req.user._id, avatar, { new: true })
+    res.status(200).send({ success: true, message: '', result })
+    // 小幫手---------------------------------------
+  } else {
+    if (req.file) avatar = req.file.path
+    const result = await helpers.findByIdAndUpdate(req.user._id, avatar, { new: true })
+    res.status(200).send({ success: true, message: '', result })
+  }
+}

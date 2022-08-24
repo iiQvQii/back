@@ -44,6 +44,7 @@ export const getAllOrders = async (req, res) => {
 // 業主查 小幫手查
 export const getMyOrders = async (req, res) => {
   try {
+    console.log('1')
     let result
     // 業主
     if (req.user.role === 1) {
@@ -56,6 +57,7 @@ export const getMyOrders = async (req, res) => {
     } else {
       result = await orders.find().populate('host', '_id name').populate('helper', '-account -password -tokens').populate('job')
     }
+
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
