@@ -17,8 +17,9 @@ const router = express.Router()
 router.post('/', content('application/json'), auth.jwt, helpers, createOrder)
 router.get('/', auth.jwt, getAllOrders)
 router.get('/my_orders', auth.jwt, getMyOrders)
-// 改訂單狀態(通過不通過)
+// 取消報名
 router.patch('/', content('application/json'), auth.jwt, helpers, cancelOrder)
+// 改報名狀態(通過不通過)
 router.patch('/host', content('application/json'), auth.jwt, hosts, reviewOrder)
 
 export default router

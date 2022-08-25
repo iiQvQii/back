@@ -188,16 +188,32 @@ export const editUserInfo = async (req, res) => {
   }
 }
 
-export const changeAvatar = async (res, req) => {
-  let avatar
-  if (req.body.role === '1') {
-    if (req.file) avatar = req.file.path
-    const result = await hosts.findByIdAndUpdate(req.user._id, avatar, { new: true })
-    res.status(200).send({ success: true, message: '', result })
-    // 小幫手---------------------------------------
-  } else {
-    if (req.file) avatar = req.file.path
-    const result = await helpers.findByIdAndUpdate(req.user._id, avatar, { new: true })
-    res.status(200).send({ success: true, message: '', result })
+// 更換大頭貼(後台)
+export const changeAvatar = async (req, res) => {
+  try {
+    let avatar
+    // console.log(req.file, '我到這裡')
+    // console.log(req.user.role, '我')
+    if (req.user.role === 1) {
+      if (req.file) avatar = req.file.path
+      avatar = avatar.slice(0, 50) + 'c_fill,g_auto,h_500,w_500/' + avatar.slice(50)
+      const result = await hosts.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+      // 小幫手---------------------------------------
+    } else {
+      if (req.file) avatar = req.file.path
+      avatar = avatar.slice(0, 50) + 'c_fill,g_auto,h_500,w_500/' + avatar.slice(50)
+      const result = await helpers.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+      res.status(200).send({ success: true, message: '', result })
+    }
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      return res.status(400).send({ success: false, message })
+    } else {
+      res.status(500).send({ success: false, message: '伺服器錯誤' })
+    }
   }
 }

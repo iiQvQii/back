@@ -22,13 +22,17 @@ export const createJob = async (req, res) => {
     }
     if (req.files.length !== 0) {
       for (const i of req.files) {
-        data.photos.push(i.path)
-        console.log(data.photos)
+        let resize = i.path
+        resize = resize.slice(0, 50) + 'c_fill,g_auto,h_600,w_800/' + resize.slice(50)
+        data.photos.push(resize)
+        // console.log('data.photos', data.photos)
       }
       // for (let i = 0; i < req.files.length; i++) {
       //   data.photos.push(req.files[i].path)
       //   console.log(data.photos)
       // }
+    } else {
+      data.photos = ['https://res.cloudinary.com/dfteusw8m/image/upload/v1661399163/icycpmwq6hjh7evphr1s.jpg']
     }
     const result = await jobs.create(data)
     res.status(200).send({ success: true, message: '', result })
@@ -63,10 +67,16 @@ export const editJob = async (req, res) => {
       is_shown: req.body.is_shown
     }
     if (req.files.length !== 0) {
-      for (let i = 0; i < req.files.length; i++) {
+      for (const i of req.files) {
+        let resize = i.path
+        resize = resize.slice(0, 50) + 'c_fill,g_auto,h_600,w_800/' + resize.slice(50)
         data.photos = []
-        data.photos.push(req.files[i].path)
+        data.photos.push(resize)
       }
+      // for (let i = 0; i < req.files.length; i++) {
+      //   data.photos = []
+      //   data.photos.push(req.files[i].path)
+      // }
     }
     // 如果職缺is not shown ， order 的 review 狀態改為 5職缺已關閉
     if (!data.is_shown) {
@@ -105,7 +115,7 @@ export const deleteJob = async (req, res) => {
 // 已顯示的工作 (前台換宿機會)
 export const getShownJobs = async (req, res) => {
   try {
-    const result = await jobs.find({ is_shown: true })
+    const result = await jobs.find({ is_shown: true }).populate('host', '_id avatar')
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)

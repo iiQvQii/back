@@ -7,6 +7,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET
 })
+// cloudinary.image('docs/models.jpg', { background: 'black', height: 250, width: 250, crop: 'pad' })
 
 const upload = multer({
   storage: new CloudinaryStorage({ cloudinary }),
@@ -28,8 +29,8 @@ const upload = multer({
 // const delete =
 
 export const single = async (req, res, next) => {
-  upload.single('photos')(req, res, async error => {
-    console.log(req.files, 123)
+  upload.single('avatar')(req, res, async error => {
+    console.log(req.file, 'req.file')
     if (error instanceof multer.MulterError) {
       let message = '上傳失敗'
       if (error.code === 'LIMIT_FILE_SIZE') {
@@ -48,7 +49,7 @@ export const single = async (req, res, next) => {
 
 export const array = async (req, res, next) => {
   // upload.single('photos')(req, res, async error => {
-  upload.array('photos', 5)(req, res, async error => {
+  upload.array('photos', 3)(req, res, async error => {
     console.log(req.files, 'req.files')
     if (error instanceof multer.MulterError) {
       let message = '上傳失敗'
