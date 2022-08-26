@@ -22,6 +22,7 @@ export const register = async (req, res) => {
   }
   req.body.password = bcrypt.hashSync(password, 10)
   try {
+    req.body.avatar = 'https://source.boringavatars.com/beam/120/' + req.body.account + req.body.role
     if (req.body.role === 0) {
       await admins.create(req.body)
     } else if (req.body.role === 1) {

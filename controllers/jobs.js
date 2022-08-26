@@ -48,7 +48,7 @@ export const createJob = async (req, res) => {
   }
 }
 
-// 這裡還沒好
+// 後台編輯工作
 export const editJob = async (req, res) => {
   try {
     const data = {
@@ -148,29 +148,41 @@ export const getMyJobs = async (req, res) => {
 }
 
 // 找包含[搜尋條件]的工作 (前台搜尋) (前端還沒好)
-// title/city/district/weldare
+// title/city/district/welfare
 // 包含所提供的
 export const getSearchJobs = async (req, res) => {
   try {
     // const result = await jobs.find({ title: { $regex: req.params.keyword, $options: 'i' } })
     const title = req.query.title
     const city = req.query.city
-    const district = req.query.district
-    const welfare = req.query.welfare
-    console.log(req.query.welfare)
+    // const dateFrom = new Date(req.query.date_from).valueOf()
+    // const dateTo = new Date(req.query.date_to).valueOf()
+    // console.log(dateFrom)
+    // console.log(dateTo)
+
+    // const welfare = req.query.welfare
+    // console.log(req.query.welfare.split(','))
+    // 如果沒輸入條件就給all
+    // console.log(req.query)
+    console.log(title, city)
+
+    // 如果有要找host，先去hosts找出來
+    // if (host) {
+    //   host = await hosts.find({ name: RegExp(`.*${host}.*`, 'gi') })
+    // }
+    // console.log(host[0].id)
+    // console.log(RegExp(`.*${city || ''}.*`, 'gi'))
     const result = await jobs.find({
       $and: [
-        { title: RegExp(`.*${title}.*`, 'gi') },
-        { city: RegExp(`.*${city}.*`, 'gi') },
-        { district: RegExp(`.*${district}.*`, 'gi') },
-        { welfare: { $in: RegExp(`.*${welfare}.*`, 'gi') } }
-        // 大於from 小於to
+        { title: RegExp(`.*${title || ''}.*`, 'gi') },
+        { city: RegExp(`.*${city || ''}.*`, 'gi') }
       ]
-    })
-    console.log(result)
+    }).populate('host', '_id avatar')
+    res.status(200).send({ success: true, message: '', result })
+
+    // console.log('result', result)
     // const keyword = new RegExp(`.*${req.params.keyword}.*`, 'gi')
     // const result = await jobs.find({ $or: { title: keyword } })
-    res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
     res.status(500).send({ success: false, message: '伺服器錯誤' })
