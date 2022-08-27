@@ -179,7 +179,7 @@ export const getSearchJobs = async (req, res) => {
       ]
     }).populate('host', '_id avatar')
     res.status(200).send({ success: true, message: '', result })
-
+    // /jobs/search?title=&city=&
     // console.log('result', result)
     // const keyword = new RegExp(`.*${req.params.keyword}.*`, 'gi')
     // const result = await jobs.find({ $or: { title: keyword } })

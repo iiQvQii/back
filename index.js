@@ -21,11 +21,13 @@ app.use(cors({
     }
   }
 }))
+
 app.use((_, req, res, next) => {
   res.status(400).send({ success: false, message: '請求被拒' })
 })
 
 app.use(express.json())
+
 app.use((_, req, res, next) => {
   res.status(400).send({ success: false, message: '請求格式錯誤' })
 })
