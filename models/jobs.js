@@ -39,7 +39,6 @@ const jobSchema = new mongoose.Schema({
   date_from: {
     type: Date,
     required: true
-
   },
   date_to: {
     type: Date,

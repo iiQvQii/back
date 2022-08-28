@@ -21,6 +21,6 @@ router.patch('/:id', content('multipart/form-data'), auth.jwt, hosts, upload.arr
 router.get('/', getShownJobs)
 router.get('/my_job', auth.jwt, getMyJobs)
 router.get('/search', getSearchJobs)
-router.get('/job/:id', getJob)
+router.get('/:id', getJob)
 
 export default router

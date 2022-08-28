@@ -32,7 +32,7 @@ export const createJob = async (req, res) => {
       //   console.log(data.photos)
       // }
     } else {
-      data.photos = ['https://res.cloudinary.com/dfteusw8m/image/upload/v1661399163/icycpmwq6hjh7evphr1s.jpg']
+      data.photos = ['https://res.cloudinary.com/dfteusw8m/image/upload/v1661593271/default-2_eymqtp.svg']
     }
     const result = await jobs.create(data)
     res.status(200).send({ success: true, message: '', result })
@@ -155,15 +155,16 @@ export const getSearchJobs = async (req, res) => {
     // const result = await jobs.find({ title: { $regex: req.params.keyword, $options: 'i' } })
     const title = req.query.title
     const city = req.query.city
-    // const dateFrom = new Date(req.query.date_from).valueOf()
-    // const dateTo = new Date(req.query.date_to).valueOf()
-    // console.log(dateFrom)
-    // console.log(dateTo)
+    let dateFrom = req.query.date_from?.replace(/-/g, '/')
+    let dateTo = req.query.date_to?.replace(/-/g, '/')
+    dateFrom = new Date(dateFrom || '2000/01/01')
+    dateTo = new Date(dateTo || '2200/01/01')
 
+    console.log(req.query.date_from)
+    console.log(dateFrom)
+    console.log(dateTo)
     // const welfare = req.query.welfare
     // console.log(req.query.welfare.split(','))
-    // 如果沒輸入條件就給all
-    // console.log(req.query)
     console.log(title, city)
 
     // 如果有要找host，先去hosts找出來
@@ -175,7 +176,10 @@ export const getSearchJobs = async (req, res) => {
     const result = await jobs.find({
       $and: [
         { title: RegExp(`.*${title || ''}.*`, 'gi') },
-        { city: RegExp(`.*${city || ''}.*`, 'gi') }
+        { city: RegExp(`.*${city || ''}.*`, 'gi') },
+        { date_from: { $lte: dateFrom && dateTo } },
+        { date_to: { $gte: dateFrom } }
+
       ]
     }).populate('host', '_id avatar')
     res.status(200).send({ success: true, message: '', result })
