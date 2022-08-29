@@ -193,7 +193,30 @@ export const getSearchJobs = async (req, res) => {
   }
 }
 
-// 找特定期間的工作 (前台搜尋) (還沒寫完)
+// 熱門換宿
+export const getHotJobs = async (req, res) => {
+  try {
+    const result = await jobs.find().populate('host', '_id avatar').sort('-applied_num -published_time')
+    // console.log(result)
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+
+// 最新換宿
+export const getLatestJobs = async (req, res) => {
+  try {
+    const result = await jobs.find().populate('host', '_id avatar').sort('-published_time -title')
+    // console.log(result)
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
+
 // User.find({age: {$gte: 21, $lte: 65}})
 // User.where('age').gte(21).lte(65);
 export const getDateJob = async (req, res) => {

@@ -9,7 +9,9 @@ import {
   getJob,
   getMyJobs,
   getSearchJobs,
-  editJob
+  editJob,
+  getHotJobs,
+  getLatestJobs
 } from '../controllers/jobs.js'
 
 const router = express.Router()
@@ -21,6 +23,8 @@ router.patch('/:id', content('multipart/form-data'), auth.jwt, hosts, upload.arr
 router.get('/', getShownJobs)
 router.get('/my_job', auth.jwt, getMyJobs)
 router.get('/search', getSearchJobs)
+router.get('/hot', getHotJobs)
+router.get('/latest', getLatestJobs)
 router.get('/:id', getJob)
 
 export default router
