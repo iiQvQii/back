@@ -196,8 +196,10 @@ export const getSearchJobs = async (req, res) => {
 // 熱門換宿
 export const getHotJobs = async (req, res) => {
   try {
-    const result = await jobs.find().populate('host', '_id avatar').sort('-applied_num -published_time')
-    // console.log(result)
+    let result = await jobs.find().populate('host', '_id avatar').sort('-applied_num -published_time')
+    if (result.length > 10) {
+      result = result.slice(0, 10)
+    }
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
@@ -208,8 +210,10 @@ export const getHotJobs = async (req, res) => {
 // 最新換宿
 export const getLatestJobs = async (req, res) => {
   try {
-    const result = await jobs.find().populate('host', '_id avatar').sort('-published_time -title')
-    // console.log(result)
+    let result = await jobs.find().populate('host', '_id avatar').sort('-published_time -title')
+    if (result.length > 10) {
+      result = result.slice(0, 10)
+    }
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
